@@ -1,0 +1,17 @@
+.title {
+  font-size: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+
+  span {
+    line-height: 42px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

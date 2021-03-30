@@ -1,0 +1,34 @@
+<div class="form-container">
+  <div class="title">
+    <span>Material/Ngrx</span>
+    <span>Testing</span>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <mat-form-field>
+      <mat-label>Email:</mat-label>
+      <input
+        matInput
+        placeholder="email@email.com"
+        type="email"
+        formControlName="email"
+      />
+      <mat-error *ngIf="form.email.invalid && form.email.touched">{{
+        form.email.hasError("required")
+          ? "This field is required"
+          : "It must be a valid email format"
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password:</mat-label>
+      <input
+        matInput
+        placeholder="email@email.com"
+        type="password"
+        formControlName="password"
+      />
+      <mat-error *ngIf="form.password.invalid && form.password.touched"
+        >This field is required</mat-error
+      >
+    </mat-form-field>
+  </form>
+</div>
