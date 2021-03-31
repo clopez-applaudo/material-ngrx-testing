@@ -8,7 +8,7 @@ import {
 import { environment } from 'src/environments/environment.test';
 import { ToDo } from '../models/todo.model';
 
-fdescribe('DashboardService', () => {
+describe('DashboardService', () => {
   let service: DashboardService;
   let http: HttpTestingController;
 

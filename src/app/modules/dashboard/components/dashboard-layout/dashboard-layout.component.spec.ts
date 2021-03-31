@@ -17,7 +17,7 @@ const mockList = [
   },
 ];
 
-fdescribe('DashboardLayoutComponent', () => {
+describe('DashboardLayoutComponent', () => {
   let component: DashboardLayoutComponent;
   let fixture: ComponentFixture<DashboardLayoutComponent>;
   let http: HttpTestingController;
