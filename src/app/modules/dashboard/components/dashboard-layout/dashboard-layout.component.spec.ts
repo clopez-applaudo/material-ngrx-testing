@@ -3,6 +3,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.test';
 import { DashboardService } from '../../services/dashboard.service';
 
@@ -13,6 +14,12 @@ const mockList = [
     completed: false,
     id: 1,
     title: 'Test',
+    userId: 1,
+  },
+  {
+    completed: true,
+    id: 2,
+    title: 'Second Test',
     userId: 1,
   },
 ];
@@ -42,13 +49,24 @@ describe('DashboardLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  afterEach(() => {
+    http.match(() => true).forEach((request) => request.flush([]));
+    http.verify();
+  });
+
+  it('should retrieve list of todo onInit', () => {
+    const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
+    expect(httpRequest.request.method).toBe('GET');
+    httpRequest.flush([]);
+  });
+
   it('should not change todo list if request fails', () => {
     component.toDoList = mockList;
     component.updateToDo(1, false);
 
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos/1`);
     expect(httpRequest.request.method).toBe('PUT');
-    httpRequest.error(new ErrorEvent('Nop'));
+    httpRequest.flush(throwError('Error'));
 
     expect(component.toDoList).toEqual(mockList);
   });
