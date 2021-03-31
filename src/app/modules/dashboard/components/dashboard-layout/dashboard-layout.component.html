@@ -1,0 +1,14 @@
+<div class="dashboard-container">
+  <mat-list class="list" *ngIf="toDoList">
+    <mat-list-item *ngFor="let toDo of toDoList">
+      {{ toDo.title }}
+      <mat-checkbox
+        class="check-list"
+        [checked]="toDo.completed"
+        [disabled]="loadingIds.includes(toDo.id)"
+        (click)="updateToDo(toDo.id, toDo.completed)"
+        >Done</mat-checkbox
+      >
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +14,9 @@ import {
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  userId!: number;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.setForm();
@@ -32,5 +33,11 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  login(): void {}
+  login(): void {
+    this.router.navigate(['dashboard'], { queryParams: { id: this.userId } });
+  }
+
+  getUserId(): void {
+    this.userId = 1;
+  }
 }

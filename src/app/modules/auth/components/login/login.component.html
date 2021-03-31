@@ -30,5 +30,8 @@
         >This field is required</mat-error
       >
     </mat-form-field>
+    <button mat-button color="primary" [disabled]="loginForm.invalid">
+      Login
+    </button>
   </form>
 </div>
