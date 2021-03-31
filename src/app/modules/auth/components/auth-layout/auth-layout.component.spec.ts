@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MockLoginComponent } from 'src/app/Testing/mock/mock-login.component';
+import { LoginComponent } from '../login/login.component';
 
 import { AuthLayoutComponent } from './auth-layout.component';
 
@@ -8,9 +12,8 @@ describe('AuthLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthLayoutComponent ]
-    })
-    .compileComponents();
+      declarations: [AuthLayoutComponent, MockLoginComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
