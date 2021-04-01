@@ -48,10 +48,26 @@ describe('DashboardService', () => {
         ])
       );
 
-    const request = http.expectOne(
+    const httpRequest = http.expectOne(
       `${environment.baseUrl}/todos?userId=${userId}`
     );
-    expect(request.request.method).toBe('GET');
-    request.flush(mockResponse);
+    expect(httpRequest.request.method).toBe('GET');
+    httpRequest.flush(mockResponse);
+  });
+
+  it('should update todo from API', () => {
+    const toDoStatus = {
+      id: 1,
+      completed: true,
+    };
+    service.udpateTodo(toDoStatus.id, toDoStatus.completed).subscribe();
+
+    const httpRequest = http.expectOne(
+      `${environment.baseUrl}/todos/${toDoStatus.id}`
+    );
+    expect(httpRequest.request.method).toBe('PUT');
+    expect(httpRequest.request.body).toEqual({
+      completed: toDoStatus.completed,
+    });
   });
 });

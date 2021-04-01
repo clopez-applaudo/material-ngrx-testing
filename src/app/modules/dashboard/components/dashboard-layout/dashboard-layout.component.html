@@ -6,7 +6,7 @@
         class="check-list"
         [checked]="toDo.completed"
         [disabled]="loadingIds.includes(toDo.id)"
-        (click)="updateToDo(toDo.id, toDo.completed)"
+        (change)="updateToDo(toDo.id, toDo.completed)"
         >Done</mat-checkbox
       >
     </mat-list-item>

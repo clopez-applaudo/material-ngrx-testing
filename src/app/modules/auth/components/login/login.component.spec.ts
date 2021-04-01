@@ -81,4 +81,20 @@ describe('LoginComponent', () => {
     expect(buttonStatus).toBe(true);
     expect(component.login).not.toHaveBeenCalled();
   });
+
+  it('should submit and call router navigate when the form is valid', async () => {
+    spyOn(router, 'navigate');
+    const user = 1;
+    component.userId = user;
+    const inputs = await loader.getAllHarnesses(MatInputHarness);
+    const button = await loader.getHarness(MatButtonHarness);
+
+    await inputs[0].setValue('test@email.com');
+    await inputs[1].setValue('password');
+    await button.click();
+
+    expect(router.navigate).toHaveBeenCalledWith(['dashboard'], {
+      queryParams: { id: user },
+    });
+  });
 });
