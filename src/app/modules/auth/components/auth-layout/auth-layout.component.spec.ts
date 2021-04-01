@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockLoginComponent } from 'src/app/Testing/mock/mock-login.component';
-import { LoginComponent } from '../login/login.component';
+import { MockLoginComponent } from 'src/app/test/mock/mock-login.component';
 
 import { AuthLayoutComponent } from './auth-layout.component';
 
