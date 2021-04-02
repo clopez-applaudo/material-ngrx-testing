@@ -28,7 +28,7 @@ const mockList = [
     title: 'Second Test',
     userId: 1,
   },
-];
+] as const;
 
 describe('DashboardLayoutComponent', () => {
   let component: DashboardLayoutComponent;
@@ -60,7 +60,6 @@ describe('DashboardLayoutComponent', () => {
   });
 
   afterEach(() => {
-    component.toDoList = [];
     http.verify();
   });
 
@@ -94,8 +93,20 @@ describe('DashboardLayoutComponent', () => {
       id: 1,
     });
 
-    const newList = [...mockList];
-    newList[0].completed = true;
+    const newList = [
+      {
+        completed: true,
+        id: 1,
+        title: 'Test',
+        userId: 1,
+      },
+      {
+        completed: true,
+        id: 2,
+        title: 'Second Test',
+        userId: 1,
+      },
+    ];
 
     expect(component.toDoList).toEqual(newList);
   });
@@ -105,7 +116,7 @@ describe('DashboardLayoutComponent', () => {
     component.ngOnInit();
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
     expect(httpRequest.request.method).toBe('GET');
-    httpRequest.flush(mockList);
+    httpRequest.flush([...mockList]);
 
     await fixture.detectChanges();
 
@@ -117,11 +128,12 @@ describe('DashboardLayoutComponent', () => {
   });
 
   it('should change status of done when done is clicked', async () => {
+    component.toDoList = [];
     initialLoad.and.callThrough();
     component.ngOnInit();
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
     expect(httpRequest.request.method).toBe('GET');
-    httpRequest.flush(mockList);
+    httpRequest.flush([...mockList]);
 
     await fixture.detectChanges();
 
