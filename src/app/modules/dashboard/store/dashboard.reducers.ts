@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { ToDo } from '../models/todo.model';
 import * as dashboardActions from './dashboard.actions';
 
+export const dashboardFeatureKey = 'dashboard';
 export interface DashboardState {
   list: ToDo[];
   error: string | undefined;
@@ -29,9 +30,9 @@ export const dashboardReducers = createReducer(
   }),
   on(dashboardActions.updateToDoSuccess, (state, action) => {
     const changedIndex = state.list.findIndex(
-      (todo) => todo.id === action.ToDo.id
+      (todo) => todo.id === action.toDo.id
     );
-    const newStatus = !!action.ToDo.completed;
+    const newStatus = !!action.toDo.completed;
     return {
       ...state,
       list: [

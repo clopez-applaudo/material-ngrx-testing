@@ -19,13 +19,14 @@ export const updateToDo = createAction(
   '[Dashboard] Update ToDo',
   props<{
     completed: boolean;
+    id: number;
   }>()
 );
 
 export const updateToDoSuccess = createAction(
   '[Dashboard] Update ToDo Success',
   props<{
-    ToDo: Partial<ToDo>;
+    toDo: Partial<ToDo>;
   }>()
 );
 

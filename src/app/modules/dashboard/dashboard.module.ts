@@ -5,6 +5,11 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardService } from './services/dashboard.service';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { StoreModule } from '@ngrx/store';
+import {
+  dashboardFeatureKey,
+  dashboardReducers,
+} from './store/dashboard.reducers';
 
 @NgModule({
   declarations: [DashboardLayoutComponent],
@@ -13,6 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     DashboardRoutingModule,
     MatListModule,
     MatCheckboxModule,
+    StoreModule.forFeature(dashboardFeatureKey, dashboardReducers),
   ],
   providers: [DashboardService],
 })

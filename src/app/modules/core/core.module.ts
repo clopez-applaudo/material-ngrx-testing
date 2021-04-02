@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './store/app.store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [NotFoundComponent],
@@ -18,6 +19,7 @@ import { reducers } from './store/app.store';
         strictActionImmutability: true,
       },
     }),
+    EffectsModule.forRoot([]),
   ],
 })
 export class CoreModule {}
