@@ -10,6 +10,8 @@ import {
   dashboardFeatureKey,
   dashboardReducers,
 } from './store/dashboard.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { DashboardEffects } from './store/dashboard.effects';
 
 @NgModule({
   declarations: [DashboardLayoutComponent],
@@ -19,6 +21,7 @@ import {
     MatListModule,
     MatCheckboxModule,
     StoreModule.forFeature(dashboardFeatureKey, dashboardReducers),
+    EffectsModule.forFeature([DashboardEffects]),
   ],
   providers: [DashboardService],
 })
