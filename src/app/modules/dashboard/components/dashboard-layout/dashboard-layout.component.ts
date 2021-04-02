@@ -14,6 +14,10 @@ export class DashboardLayoutComponent implements OnInit {
   constructor(private service: DashboardService) {}
 
   ngOnInit(): void {
+    this.loadToDo();
+  }
+
+  loadToDo(): void {
     this.service.getTodos().subscribe((list) => (this.toDoList = list));
   }
 

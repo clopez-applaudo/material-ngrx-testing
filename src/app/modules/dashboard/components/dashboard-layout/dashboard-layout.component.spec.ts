@@ -35,6 +35,7 @@ describe('DashboardLayoutComponent', () => {
   let fixture: ComponentFixture<DashboardLayoutComponent>;
   let http: HttpTestingController;
   let loader: HarnessLoader;
+  let initialLoad: jasmine.Spy;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,6 +51,7 @@ describe('DashboardLayoutComponent', () => {
     fixture = TestBed.createComponent(DashboardLayoutComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
+    initialLoad = spyOn(component, 'loadToDo');
     fixture.detectChanges();
   });
 
@@ -58,12 +60,13 @@ describe('DashboardLayoutComponent', () => {
   });
 
   afterEach(() => {
-    http.match(() => true).forEach((request) => request.flush([]));
     component.toDoList = [];
     http.verify();
   });
 
   it('should retrieve list of todo onInit', () => {
+    initialLoad.and.callThrough();
+    component.ngOnInit();
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
     expect(httpRequest.request.method).toBe('GET');
     httpRequest.flush([]);
@@ -98,6 +101,8 @@ describe('DashboardLayoutComponent', () => {
   });
 
   it('should render the todo list when retrieved', async () => {
+    initialLoad.and.callThrough();
+    component.ngOnInit();
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
     expect(httpRequest.request.method).toBe('GET');
     httpRequest.flush(mockList);
@@ -112,6 +117,8 @@ describe('DashboardLayoutComponent', () => {
   });
 
   it('should change status of done when done is clicked', async () => {
+    initialLoad.and.callThrough();
+    component.ngOnInit();
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
     expect(httpRequest.request.method).toBe('GET');
     httpRequest.flush(mockList);
