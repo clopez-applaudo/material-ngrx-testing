@@ -93,10 +93,8 @@ describe('DashboardLayoutComponent', () => {
 
     const newList = [...mockList];
     newList[0] = {
+      ...newList[0],
       completed: true,
-      id: 1,
-      title: 'Test',
-      userId: 1,
     };
 
     expect(component.toDoList).toEqual(newList);
