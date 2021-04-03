@@ -20,21 +20,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from '../../store/dashboard.effects';
 import { getToDoListSuccess } from '../../store/dashboard.actions';
-
-const mockList = [
-  {
-    completed: false,
-    id: 1,
-    title: 'Test',
-    userId: 1,
-  },
-  {
-    completed: true,
-    id: 2,
-    title: 'Second Test',
-    userId: 1,
-  },
-];
+import { mockList } from 'src/app/test/mock/mock-todo-list';
 
 describe('DashboardLayoutComponent', () => {
   let component: DashboardLayoutComponent;

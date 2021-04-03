@@ -1,7 +1,7 @@
 import { initialState } from 'src/app/test/store-initial-state';
 import { listError, toDoList } from './dashboard.selectors';
 
-describe('Selectors', () => {
+describe('Dashboard selectors', () => {
   it('should select the list of todos', () => {
     const result = toDoList.projector(initialState.dashboard);
     expect(result.length).toEqual(2);
