@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { DashboardService } from '../services/dashboard.service';
 import * as dashboardActions from './dashboard.actions';
 
@@ -9,8 +11,17 @@ export class DashboardEffects {
   loadToDoList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(dashboardActions.getToDoList),
-      switchMap(() => this.service.getTodos()),
-      map((response) => dashboardActions.getToDoListSuccess({ list: response }))
+      switchMap(() =>
+        this.service.getTodos().pipe(
+          catchError((error: HttpErrorResponse) => {
+            dashboardActions.getToDoListFailure({ error: error.message });
+            return EMPTY;
+          }),
+          map((response) =>
+            dashboardActions.getToDoListSuccess({ list: response })
+          )
+        )
+      )
     )
   );
 
@@ -18,9 +29,16 @@ export class DashboardEffects {
     this.actions$.pipe(
       ofType(dashboardActions.updateToDo),
       switchMap((action) =>
-        this.service.udpateTodo(action.id, action.completed)
-      ),
-      map((response) => dashboardActions.updateToDoSuccess({ toDo: response }))
+        this.service.udpateTodo(action.id, action.completed).pipe(
+          catchError((error: HttpErrorResponse) => {
+            dashboardActions.updateToDoFailure({ error: error.message });
+            return EMPTY;
+          }),
+          map((response) =>
+            dashboardActions.updateToDoSuccess({ toDo: response })
+          )
+        )
+      )
     )
   );
 

@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/modules/core/store/app.store';
 import { ToDo } from '../../models/todo.model';
-import { DashboardService } from '../../services/dashboard.service';
 import { getToDoList, updateToDo } from '../../store/dashboard.actions';
 import { toDoList } from '../../store/dashboard.selectors';
 
@@ -18,21 +17,25 @@ export class DashboardLayoutComponent implements OnInit, OnDestroy {
   loadingIds: Number[] = [];
   unsubscribe$ = new Subject();
 
-  constructor(
-    private service: DashboardService,
-    private store: Store<AppState>
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.store
-      .pipe(select(toDoList), takeUntil(this.unsubscribe$))
-      .subscribe((list) => (this.toDoList = list));
+    this.synchToDo();
     this.store.dispatch(getToDoList());
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  synchToDo(): void {
+    this.store
+      .pipe(select(toDoList), takeUntil(this.unsubscribe$))
+      .subscribe((list) => {
+        this.toDoList = list;
+        this.loadingIds = [];
+      });
   }
 
   updateToDo(id: number, status: boolean): void {

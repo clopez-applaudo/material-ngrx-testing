@@ -29,18 +29,13 @@ export const dashboardReducers = createReducer(
     };
   }),
   on(dashboardActions.updateToDoSuccess, (state, action) => {
-    const changedIndex = state.list.findIndex(
-      (todo) => todo.id === action.toDo.id
-    );
     const newStatus = !!action.toDo.completed;
     return {
       ...state,
       list: [
-        ...state.list,
-        (state.list[changedIndex] = {
-          ...state.list[changedIndex],
-          completed: newStatus,
-        }),
+        ...state.list.map((todo) =>
+          todo.id === action.toDo.id ? { ...todo, completed: newStatus } : todo
+        ),
       ],
       error: undefined,
     };
