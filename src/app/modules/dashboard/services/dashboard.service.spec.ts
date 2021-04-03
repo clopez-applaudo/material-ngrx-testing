@@ -82,7 +82,7 @@ describe('DashboardService', () => {
       id: 1,
       completed: true,
     };
-    service.udpateTodo(toDoStatus.id, toDoStatus.completed).subscribe();
+    service.updateTodo(toDoStatus.id, toDoStatus.completed).subscribe();
 
     const httpRequest = http.expectOne(
       `${environment.baseUrl}/todos/${toDoStatus.id}`

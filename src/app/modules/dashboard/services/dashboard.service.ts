@@ -28,7 +28,7 @@ export class DashboardService {
       );
   }
 
-  udpateTodo(id: number, status: boolean): Observable<Partial<ToDo>> {
+  updateTodo(id: number, status: boolean): Observable<Partial<ToDo>> {
     return this.http.put<Partial<ToDo>>(`${this.baseUrl}/todos/${id}`, {
       completed: status,
     });
