@@ -55,6 +55,28 @@ describe('DashboardService', () => {
     httpRequest.flush(mockResponse);
   });
 
+  it('should get todo list from API, with userId equal to 1 by default', () => {
+    const mockResponse: ToDo[] = [
+      {
+        completed: false,
+        id: 1,
+        title: 'Test todo',
+        userId: 2,
+      },
+    ];
+    service
+      .getTodos()
+      .subscribe((res) =>
+        expect(res).toEqual([
+          ...mockResponse.map((entry) => ({ ...entry, parentId: 1 })),
+        ])
+      );
+
+    const httpRequest = http.expectOne(`${environment.baseUrl}/todos?userId=1`);
+    expect(httpRequest.request.method).toBe('GET');
+    httpRequest.flush(mockResponse);
+  });
+
   it('should update todo from API', () => {
     const toDoStatus = {
       id: 1,

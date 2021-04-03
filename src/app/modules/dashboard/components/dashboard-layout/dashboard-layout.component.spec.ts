@@ -15,6 +15,12 @@ import { DashboardLayoutComponent } from './dashboard-layout.component';
 import { MatListItemHarness } from '@angular/material/list/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 
+import { AppState, reducers } from 'src/app/modules/core/store/app.store';
+import { Store, StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { DashboardEffects } from '../../store/dashboard.effects';
+import { getToDoListSuccess } from '../../store/dashboard.actions';
+
 const mockList = [
   {
     completed: false,
@@ -35,15 +41,23 @@ describe('DashboardLayoutComponent', () => {
   let fixture: ComponentFixture<DashboardLayoutComponent>;
   let http: HttpTestingController;
   let loader: HarnessLoader;
+  let store: Store<AppState>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DashboardLayoutComponent],
-      imports: [HttpClientTestingModule, MatListModule, MatCheckboxModule],
+      imports: [
+        HttpClientTestingModule,
+        MatListModule,
+        MatCheckboxModule,
+        StoreModule.forRoot(reducers),
+        EffectsModule.forRoot([DashboardEffects]),
+      ],
       providers: [DashboardService],
     }).compileComponents();
 
     http = TestBed.inject(HttpTestingController);
+    store = TestBed.inject(Store);
   });
 
   beforeEach(() => {
@@ -70,7 +84,7 @@ describe('DashboardLayoutComponent', () => {
   });
 
   it('should not change todo list if request fails', () => {
-    component.toDoList = [...mockList];
+    store.dispatch(getToDoListSuccess({ list: mockList }));
     component.updateToDo(1, false);
 
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos/1`);
@@ -81,7 +95,7 @@ describe('DashboardLayoutComponent', () => {
   });
 
   it('should change todo list if request is success', () => {
-    component.toDoList = [...mockList];
+    store.dispatch(getToDoListSuccess({ list: mockList }));
     component.updateToDo(1, false);
 
     const httpRequest = http.expectOne(`${environment.baseUrl}/todos/1`);
