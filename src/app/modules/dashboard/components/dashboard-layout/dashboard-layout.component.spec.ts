@@ -21,6 +21,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from '../../store/dashboard.effects';
 import { getToDoListSuccess } from '../../store/dashboard.actions';
 import { mockList } from 'src/app/test/mock/mock-todo-list';
+import { MatInputHarness } from '@angular/material/input/testing';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { tap } from 'rxjs/operators';
+
+const delay = (duration: number) => new Promise(resolve => setTimeout(resolve, duration));
 
 describe('DashboardLayoutComponent', () => {
   let component: DashboardLayoutComponent;
@@ -36,6 +44,10 @@ describe('DashboardLayoutComponent', () => {
         HttpClientTestingModule,
         MatListModule,
         MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        NoopAnimationsModule,
         StoreModule.forRoot(reducers),
         EffectsModule.forRoot([DashboardEffects]),
       ],
@@ -135,4 +147,15 @@ describe('DashboardLayoutComponent', () => {
     });
     expect(component.toDoList[0].completed).toBe(true);
   });
+
+  it('should trigger when app is selected', async () => {
+    component.currentAppId = 1;
+    const searchInput = await loader.getHarness(MatInputHarness);
+    spyOn(console, 'log').and.callThrough();
+    await searchInput.setValue('test');
+    expect(await searchInput.getValue()).toBe('test');
+    await delay(700);
+
+    expect(console.log).toHaveBeenCalledWith('Search is triggered', 'test');
+  })
 });

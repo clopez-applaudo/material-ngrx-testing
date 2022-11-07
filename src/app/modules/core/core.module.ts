@@ -8,6 +8,7 @@ import { reducers } from './store/app.store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [NotFoundComponent],
@@ -21,6 +22,7 @@ import { environment } from 'src/environments/environment';
         strictActionImmutability: true,
       },
     }),
+    MatButtonModule,
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

@@ -12,6 +12,9 @@ import {
 } from './store/dashboard.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { DashboardEffects } from './store/dashboard.effects';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [DashboardLayoutComponent],
@@ -20,6 +23,9 @@ import { DashboardEffects } from './store/dashboard.effects';
     DashboardRoutingModule,
     MatListModule,
     MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
     StoreModule.forFeature(dashboardFeatureKey, dashboardReducers),
     EffectsModule.forFeature([DashboardEffects]),
   ],

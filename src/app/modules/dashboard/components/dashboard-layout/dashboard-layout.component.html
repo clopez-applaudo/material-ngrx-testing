@@ -1,4 +1,14 @@
 <div class="dashboard-container">
+  <mat-form-field floatLabel="never">
+    <mat-label>Search</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="search"
+      [formControl]="searchInput"
+      maxlength="50"
+     >
+  </mat-form-field>
   <mat-list class="list" *ngIf="toDoList">
     <mat-list-item *ngFor="let toDo of toDoList">
       {{ toDo.title }}

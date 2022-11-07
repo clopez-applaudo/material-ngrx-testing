@@ -6,6 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   userId!: number;
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private loginService: LoginService) {}
 
   ngOnInit(): void {
     this.setForm();
@@ -34,10 +36,17 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.router.navigate(['dashboard'], { queryParams: { id: this.userId } });
+    this.loginService.login('test').subscribe({
+      next: () => this.router.navigate(['dashboard'], { queryParams: { id: this.userId } }),
+      error: (error) => throwError(error)
+    });
   }
 
   getUserId(): void {
     this.userId = 1;
+  }
+
+  checkLoad(): void {
+    console.log('This loads');
   }
 }

@@ -13,16 +13,35 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
+import { LoginService } from '../../services/login.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { By } from '@angular/platform-browser';
+
+@Component({
+  selector: 'app-button',
+  template: `<button class="inside-button" (click)='emit()'></button>`
+})
+export class MockButton {
+  @Output() load = new EventEmitter();
+
+  emit(): void {
+    this.load.emit('Hello');
+  }
+}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let router: Router;
   let loader: HarnessLoader;
+  let service: LoginService;
+  
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoginComponent],
+      declarations: [LoginComponent, MockButton],
       imports: [
         ReactiveFormsModule,
         RouterTestingModule,
@@ -30,10 +49,13 @@ describe('LoginComponent', () => {
         MatInputModule,
         MatButtonModule,
         NoopAnimationsModule,
+        HttpClientTestingModule
       ],
+      providers: [LoginService]
     }).compileComponents();
 
     router = TestBed.inject(Router);
+    service = TestBed.inject(LoginService);
   });
 
   beforeEach(() => {
@@ -48,12 +70,14 @@ describe('LoginComponent', () => {
   });
 
   it('should triggers redirection when login method is called', () => {
+    spyOn(service, 'login').and.returnValue(of(true));
     spyOn(router, 'navigate');
     const user = 1;
     component.userId = user;
 
     component.login();
 
+    expect(service.login).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledOnceWith(['dashboard'], {
       queryParams: { id: user },
@@ -83,6 +107,7 @@ describe('LoginComponent', () => {
   });
 
   it('should submit and call router navigate when the form is valid', async () => {
+    spyOn(service, 'login').and.returnValue(of(true));
     spyOn(router, 'navigate');
     const user = 1;
     component.userId = user;
@@ -97,4 +122,13 @@ describe('LoginComponent', () => {
       queryParams: { id: user },
     });
   });
+
+  fit('should trigger method with checkLoad when app-button is clicked', () => {
+    spyOn(console, 'log');
+    const button = fixture.debugElement.query(By.css('.inside-button'));
+    button.nativeElement.click();
+    button.triggerEventHandler('click', {});
+    fixture.detectChanges();
+    expect(console.log).toHaveBeenCalled();
+  })
 });
