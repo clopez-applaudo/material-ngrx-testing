@@ -123,7 +123,7 @@ describe('LoginComponent', () => {
     });
   });
 
-  fit('should trigger method with checkLoad when app-button is clicked', () => {
+  it('should trigger method with checkLoad when app-button is clicked', () => {
     spyOn(console, 'log');
     const button = fixture.debugElement.query(By.css('.inside-button'));
     button.nativeElement.click();
